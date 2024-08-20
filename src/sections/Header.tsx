@@ -2,9 +2,11 @@ import LogoIcon from '@/assets/logo.svg';
 import MenuIcon from '@/assets/icon-menu.svg';
 export const Header = () => {
   return (
-    <header className="py-4  border-b border-white/15 md:border-none sticky top-0 z-10  ">
+    <header className="py-4  border-b border-white/15 md:border-none sticky top-0 z-10 ">
+      <div className="absolute inset-0 backdrop-blur -z-10 md:hidden"></div>
       <div className="container">
-        <div className="flex justify-between md:border max-w-2xl mx-auto items-center md:p-2.5 rounded-xl border-white/15 ">
+        <div className="flex justify-between md:border max-w-2xl mx-auto items-center md:p-2.5 relative rounded-xl border-white/15 ">
+          <div className=" absolute inset-0 backdrop-blur -z-10 hidden md:block"></div>
           <div>
             <div className="border text-white h-10 w-10 rounded-lg inline-flex justify-center items-center border-white/15 ">
               <LogoIcon className="h-8 w-8"></LogoIcon>
