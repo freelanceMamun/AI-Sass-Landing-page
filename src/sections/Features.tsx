@@ -12,7 +12,13 @@ import {
 } from 'framer-motion';
 import Image from 'next/image';
 import productImage from '@/assets/product-image.png';
-import { useEffect, useRef, useState } from 'react';
+import {
+  ComponentProps,
+  ComponentPropsWithRef,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 const tabs = [
   {
     icon: '/assets/lottie/vroom.lottie',
@@ -40,7 +46,10 @@ const tabs = [
   },
 ];
 
-const FeaturesTab = (tab: (typeof tabs)[number]) => {
+const FeaturesTab = (
+  props: (typeof tabs)[number] &
+    ComponentPropsWithRef<'div'> & { selected: boolean }
+) => {
   const dotLottiRef = useRef<DotLottieCommonPlayer>(null);
 
   const tabRef = useRef<HTMLDivElement>(null);
@@ -57,8 +66,10 @@ const FeaturesTab = (tab: (typeof tabs)[number]) => {
   };
 
   useEffect(() => {
-    if (!tabRef.current) return;
+    if (!tabRef.current || !props.selected) return;
 
+    xPercentage.set(0);
+    yPercentage.set(0);
     const { height, width } = tabRef.current?.getBoundingClientRect();
     const circumFrernce = height * 2 + width * 2;
     const times = [
@@ -70,43 +81,47 @@ const FeaturesTab = (tab: (typeof tabs)[number]) => {
     ];
     animate(xPercentage, [0, 100, 100, 0, 0], {
       times,
-      duration: 20,
+      duration: 4,
       repeat: Infinity,
       ease: 'linear',
       repeatType: 'loop',
     });
     animate(yPercentage, [0, 0, 100, 100, 0], {
       times,
-      duration: 20,
+      duration: 4,
       repeat: Infinity,
       ease: 'linear',
       repeatType: 'loop',
     });
-  }, [xPercentage, yPercentage]);
+  }, [xPercentage, yPercentage, props.selected]);
 
   return (
     <div
+      onClick={props.onClick}
       ref={tabRef}
       onMouseEnter={handelTabHover}
-      key={tab.title}
+      key={props.title}
       className="border md:flex-1 border-white/15 flex items-center p-2.5 relative rounded-xl gap-2"
     >
-      <motion.div
-        style={{
-          maskImage: maskTamplagte,
-        }}
-        className=" absolute inset-0 -m-px rounded-xl border border-[#a369ff] [mask-image:]"
-      ></motion.div>
+      {props.selected && (
+        <motion.div
+          style={{
+            maskImage: maskTamplagte,
+          }}
+          className=" absolute inset-0 -m-px rounded-xl border border-[#a369ff] [mask-image:]"
+        ></motion.div>
+      )}
+
       <div className="h-12 w-12 border border-white/15 rounded-lg inline-flex items-center justify-center">
         <DotLottiePlayer
           ref={dotLottiRef}
           className="h-5 w-5"
-          src={tab.icon}
+          src={props.icon}
         ></DotLottiePlayer>
       </div>
 
-      <div className="text-white font-medium">{tab.title}</div>
-      {tab.isNew && (
+      <div className="text-white font-medium">{props.title}</div>
+      {props.isNew && (
         <div className="text-sm rounded-full px-2 py-0.5 bg-[#8c44ff] text-white">
           new
         </div>
@@ -117,6 +132,42 @@ const FeaturesTab = (tab: (typeof tabs)[number]) => {
 
 export const Features = () => {
   const [selectedTab, setSelectedTab] = useState(0);
+
+  const backgroundPostionX = useMotionValue(tabs[0].backgroundPositionX);
+  const backgroundPostionY = useMotionValue(tabs[0].backgroundPositionY);
+  const backgroundSizeX = useMotionValue(tabs[0].backgroundSizeX);
+  const backgroundPosition = useMotionTemplate`${backgroundPostionX}% ${backgroundPostionY}%`;
+  const backgroundSize = useMotionTemplate`${backgroundSizeX}% auto`;
+  const handelSelectedTab = (index: number) => {
+    setSelectedTab(index);
+
+    animate(
+      backgroundSizeX,
+      [backgroundSizeX.get(), 100, tabs[index].backgroundSizeX],
+      {
+        duration: 2,
+        ease: 'easeInOut',
+      }
+    );
+
+    animate(
+      backgroundPostionX,
+      [backgroundPostionX.get(), tabs[index].backgroundPositionX],
+      {
+        duration: 2,
+        ease: 'easeInOut',
+      }
+    );
+
+    animate(
+      backgroundPostionY,
+      [backgroundPostionY.get(), tabs[index].backgroundPositionY],
+      {
+        duration: 2,
+        ease: 'easeInOut',
+      }
+    );
+  };
 
   return (
     <section>
@@ -131,15 +182,26 @@ export const Features = () => {
           </p>
         </div>
         <div className="mt-10 flex flex-col  lg:flex-row gap-3">
-          {tabs.map((tab) => {
-            return <FeaturesTab {...tab} key={tab.title}></FeaturesTab>;
+          {tabs.map((tab, tabIndex) => {
+            return (
+              <FeaturesTab
+                {...tab}
+                selected={selectedTab == tabIndex}
+                onClick={() => handelSelectedTab(tabIndex)}
+                key={tab.title}
+              ></FeaturesTab>
+            );
           })}
         </div>
         <div className="border border-white/20 p-2.5 rounded-xl mt-3">
-          <div
+          <motion.div
             className=" aspect-video bg-cover border-white/20 border rounded-lg"
-            style={{ backgroundImage: `url(${productImage.src})` }}
-          ></div>
+            style={{
+              backgroundImage: `url(${productImage.src})`,
+              backgroundPosition: backgroundPosition,
+              backgroundSize: backgroundSize,
+            }}
+          ></motion.div>
           {/* <Image
             src={productImage}
             alt="Product image"

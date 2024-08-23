@@ -18,7 +18,7 @@ export const LogoTicker = () => {
           <div className="flex-1 md:flex-none text-white">
             <h2>Trusted by to innovative teams</h2>
           </div>
-          <div className="flex-1 overflow-hidden lg:overflow-visible [mask-image:linear-gradient(to_right,transparent,black_20%,black_80%,transparent)] ">
+          <div className="flex-1 overflow-hidden lg:overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_20%,black_80%,transparent)] ">
             <motion.div
               initial={{
                 translateX: '-50%',
