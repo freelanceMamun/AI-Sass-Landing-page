@@ -84,11 +84,11 @@ export const Hero = () => {
       <div className="container relative  mt-16">
         <h1 className=" md:text-[168px] md:leading-none bg-clip-text text-center text-8xl font-semibold tracking-tighter bg-white text-transparent bg-[radial-gradient(100%_100%_at_top_left,white,white,rgb(74,32,138,0.5))]">
           {' '}
-          AI SEO
+          WEB 3.0
         </h1>
         <p className="text-white/70 md:text-xl mt-5 text-center max-w-xl mx-auto text-lg">
           {`Elevate your site's visibility effortlessly with AI, where smart
-          technology meets user-friendly SEO tools. s`}
+          technology meets user-friendly mordan Website tools`}
         </p>
         <div className="flex justify-center mt-5">
           <Button></Button>

@@ -1,8 +1,12 @@
+'use client';
+
 import avatar1 from '@/assets/avatar-1.png';
 import avatar2 from '@/assets/avatar-2.png';
 import avatar3 from '@/assets/avatar-3.png';
 import avatar4 from '@/assets/avatar-4.png';
 import Image from 'next/image';
+
+import { motion } from 'framer-motion';
 const testimonials = [
   {
     text: '“This product has completely transformed how I manage my projects and deadlines”',
@@ -43,9 +47,22 @@ export const Testimonials = () => {
             strategies.
           </p>
         </div>
-        <div className="overflow-hidden mt-10 [mask-image:linear-gradient(to_right,transparent,black_20%,black_80%,transparent)]">
-          <div className="flex gap-5">
-            {testimonials.map((testimonial) => {
+        <div className=" flex overflow-hidden mt-10 [mask-image:linear-gradient(to_right,transparent,black_20%,black_80%,transparent)]">
+          <motion.div
+            initial={{
+              translateX: '-50%',
+            }}
+            animate={{
+              translateX: '0%',
+            }}
+            transition={{
+              duration: 40,
+              repeat: Infinity,
+              ease: 'linear',
+            }}
+            className="flex flex-none gap-5 -translate-x-1/2"
+          >
+            {[...testimonials, ...testimonials].map((testimonial) => {
               return (
                 <div
                   className="border border-white/15 p-6 md:p-10 rounded-xl bg-gradient-to-bl from-[rgb(140,69,255,.3)] to-[#000000] md:max-w-md max-w-sm flex-none"
@@ -72,7 +89,7 @@ export const Testimonials = () => {
                 </div>
               );
             })}
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>
