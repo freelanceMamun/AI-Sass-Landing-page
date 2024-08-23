@@ -1,8 +1,18 @@
 'use client';
 
-import { DotLottiePlayer } from '@dotlottie/react-player';
+import {
+  DotLottieCommonPlayer,
+  DotLottiePlayer,
+} from '@dotlottie/react-player';
+import {
+  animate,
+  motion,
+  useMotionTemplate,
+  useMotionValue,
+} from 'framer-motion';
 import Image from 'next/image';
 import productImage from '@/assets/product-image.png';
+import { useEffect, useRef, useState } from 'react';
 const tabs = [
   {
     icon: '/assets/lottie/vroom.lottie',
@@ -30,7 +40,84 @@ const tabs = [
   },
 ];
 
+const FeaturesTab = (tab: (typeof tabs)[number]) => {
+  const dotLottiRef = useRef<DotLottieCommonPlayer>(null);
+
+  const tabRef = useRef<HTMLDivElement>(null);
+
+  const xPercentage = useMotionValue(100);
+  const yPercentage = useMotionValue(50);
+
+  const maskTamplagte = useMotionTemplate`radial-gradient(80px 80px at ${xPercentage}%  ${yPercentage}% ,black , transparent)`;
+
+  const handelTabHover = () => {
+    if (dotLottiRef.current == null) return;
+    dotLottiRef.current.seek(0);
+    dotLottiRef.current?.play();
+  };
+
+  useEffect(() => {
+    if (!tabRef.current) return;
+
+    const { height, width } = tabRef.current?.getBoundingClientRect();
+    const circumFrernce = height * 2 + width * 2;
+    const times = [
+      0,
+      width / circumFrernce,
+      (width + height) / circumFrernce,
+      (width * 2 + height) / circumFrernce,
+      1,
+    ];
+    animate(xPercentage, [0, 100, 100, 0, 0], {
+      times,
+      duration: 20,
+      repeat: Infinity,
+      ease: 'linear',
+      repeatType: 'loop',
+    });
+    animate(yPercentage, [0, 0, 100, 100, 0], {
+      times,
+      duration: 20,
+      repeat: Infinity,
+      ease: 'linear',
+      repeatType: 'loop',
+    });
+  }, [xPercentage, yPercentage]);
+
+  return (
+    <div
+      ref={tabRef}
+      onMouseEnter={handelTabHover}
+      key={tab.title}
+      className="border md:flex-1 border-white/15 flex items-center p-2.5 relative rounded-xl gap-2"
+    >
+      <motion.div
+        style={{
+          maskImage: maskTamplagte,
+        }}
+        className=" absolute inset-0 -m-px rounded-xl border border-[#a369ff] [mask-image:]"
+      ></motion.div>
+      <div className="h-12 w-12 border border-white/15 rounded-lg inline-flex items-center justify-center">
+        <DotLottiePlayer
+          ref={dotLottiRef}
+          className="h-5 w-5"
+          src={tab.icon}
+        ></DotLottiePlayer>
+      </div>
+
+      <div className="text-white font-medium">{tab.title}</div>
+      {tab.isNew && (
+        <div className="text-sm rounded-full px-2 py-0.5 bg-[#8c44ff] text-white">
+          new
+        </div>
+      )}
+    </div>
+  );
+};
+
 export const Features = () => {
+  const [selectedTab, setSelectedTab] = useState(0);
+
   return (
     <section>
       <div className=" container md:py-24">
@@ -45,28 +132,7 @@ export const Features = () => {
         </div>
         <div className="mt-10 flex flex-col  lg:flex-row gap-3">
           {tabs.map((tab) => {
-            return (
-              <div
-                key={tab.title}
-                className="border md:flex-1 border-white/15 flex items-center p-2.5 rounded-xl gap-2"
-              >
-                <div className="h-12 w-12 border border-white/15 rounded-lg inline-flex items-center justify-center">
-                  <DotLottiePlayer
-                    className="h-5 w-5"
-                    autoplay
-                    loop
-                    src={tab.icon}
-                  ></DotLottiePlayer>
-                </div>
-
-                <div className="text-white font-medium">{tab.title}</div>
-                {tab.isNew && (
-                  <div className="text-sm rounded-full px-2 py-0.5 bg-[#8c44ff] text-white">
-                    new
-                  </div>
-                )}
-              </div>
-            );
+            return <FeaturesTab {...tab} key={tab.title}></FeaturesTab>;
           })}
         </div>
         <div className="border border-white/20 p-2.5 rounded-xl mt-3">
