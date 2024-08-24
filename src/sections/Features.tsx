@@ -174,11 +174,11 @@ export const Features = () => {
       <div className=" container md:py-24">
         <div className="">
           <h2 className="text-white md:text-6xl lg:text-7xl text-5xl font-medium text-center  tracking-tighter">
-            Elevate your SEO effort
+            Elevate your AI Development
           </h2>
           <p className="text-white/70  text-lg md:text-xl max-w-xl mx-auto text-center tracking-tighter mt-5">
             From small startups to large enterprises, our AI-driven tool has
-            revolutionized the way businesses approach SEO.
+            revolutionized the way businesses approach Web3.0
           </p>
         </div>
         <div className="mt-10 flex flex-col  lg:flex-row gap-3">

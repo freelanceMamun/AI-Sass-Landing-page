@@ -82,7 +82,7 @@ export const Hero = () => {
       </motion.div>
 
       <div className="container relative  mt-16">
-        <h1 className=" md:text-[168px] md:leading-none bg-clip-text text-center text-8xl font-semibold tracking-tighter bg-white text-transparent bg-[radial-gradient(100%_100%_at_top_left,white,white,rgb(74,32,138,0.5))]">
+        <h1 className=" md:text-[168px] md:leading-none bg-clip-text text-center text-7xl font-semibold tracking-tighter bg-white text-transparent bg-[radial-gradient(100%_100%_at_top_left,white,white,rgb(74,32,138,0.5))]">
           {' '}
           WEB 3.0
         </h1>

@@ -1,6 +1,14 @@
+'use client';
 import LogoIcon from '@/assets/logo.svg';
 import MenuIcon from '@/assets/icon-menu.svg';
+import { useState } from 'react';
 export const Header = () => {
+  const [activeNav, setactiveNav] = useState(false);
+
+  const navhandeler = () => {
+    setactiveNav((prev) => !prev);
+  };
+
   return (
     <header className="py-4  border-b border-white/15 md:border-none sticky top-0 z-10 ">
       <div className="absolute inset-0 backdrop-blur -z-10 md:hidden"></div>
@@ -40,6 +48,7 @@ export const Header = () => {
               </a>
             </nav>
           </div>
+
           <div className="flex items-center gap-4">
             <button className=" relative py-2 px-3 rounded-lg text-white font-medium text-sm bg-gradient-to-b from-[#190d2e] to-[#4a208a] shadow-[0px_0px_12px_#8c45ff]">
               <div className=" absolute inset-0 ">
@@ -50,8 +59,43 @@ export const Header = () => {
 
               <span>Join waitlist</span>
             </button>
-            <MenuIcon className="md:hidden"></MenuIcon>
+            <div onClick={navhandeler}>
+              <MenuIcon className="md:hidden"></MenuIcon>
+            </div>
           </div>
+        </div>
+        <div
+          className={`md:hidden h-0 scale-y-0 opacity-0 pointer-events-none ${
+            activeNav &&
+            'h-1/3 scale-y-100 pointer-events-auto opacity-100 mt-8'
+          } transition-all duration-500`}
+        >
+          <nav className=" flex  gap-8 flex-col text-sm text-white/70 hover:text-white transition">
+            <a
+              href="#"
+              className="text-white/70 hover:text-white transition duration-300"
+            >
+              Features
+            </a>
+            <a
+              href="#"
+              className="text-white/70 hover:text-white transition duration-300"
+            >
+              Developers
+            </a>
+            <a
+              href="#"
+              className="text-white/70 hover:text-white transition duration-300"
+            >
+              Pricing
+            </a>
+            <a
+              href="#"
+              className="text-white/70 hover:text-white transition duration-300"
+            >
+              Changelog
+            </a>
+          </nav>
         </div>
       </div>
     </header>
